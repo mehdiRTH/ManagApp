@@ -5,4 +5,5 @@ export interface MenuItemInterface{
     icon:IconDefinition;
     count:number | null;
     route:string;
+    isShowed:boolean
 }

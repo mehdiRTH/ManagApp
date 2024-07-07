@@ -1,6 +1,6 @@
 import { PageProps as InertiaPageProps } from '@inertiajs/core';
 import { AxiosInstance } from 'axios';
-import { route as ziggyRoute } from 'ziggy-js';
+import { RouteParams, route as ziggyRoute } from 'ziggy-js';
 import { PageProps as AppPageProps } from './';
 
 declare global {
@@ -14,6 +14,13 @@ declare global {
 declare module 'vue' {
     interface ComponentCustomProperties {
         route: typeof ziggyRoute;
+        $helpers:{
+            capitalizeFirstLetter(str:string) : string,
+            truncateString(str : string) : string,
+            destroyModal(objectModal : RouteParams<string>, routeName : string) : void,
+            hasRole(role : string) : boolean,
+            hasRoles(role : Array<string>) : boolean
+        }
     }
 }
 

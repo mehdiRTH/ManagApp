@@ -26,6 +26,7 @@ class MeetingsRequest extends FormRequest
             'participants_id'=>'required|array',
             'start_date'=>'required|date|after_or_equal:today',
             'end_date'=>'required|date|after:start_date',
+            'description'=>'nullable|min:10'
         ];
     }
 

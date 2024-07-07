@@ -22,6 +22,7 @@ const form=useForm({
     responsible_id:isEdit ? props.meeting.data.responsible?.id : '' ,
     start_date:isEdit ? props.meeting.data.start_date : '' ,
     end_date:isEdit ? props.meeting.data.end_date : '' ,
+    description: isEdit ? props.meeting.data.description : '' ,
 })
 
 function capitalizeFirstLetter(str:string) {
@@ -77,6 +78,8 @@ const submit=(()=>{
                     <el-date-picker v-model="form.end_date" type="datetime" value-format="YYYY-MM-DD HH:mm:ss" format="YYYY-MM-DD HH:mm" placeholder="Select End date" class="w-full" />
                 </div>
             </Label>
+
+            <MainInput v-model="form.description" label="Description" input-type="textarea" :error="form.errors.description" class="col-span-2" />
         </Form>
     </MainLayout>
 </template>

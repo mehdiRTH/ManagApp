@@ -12,8 +12,8 @@ defineProps<{
 <template>
     <div>
         <div v-if="inputType=='textarea'">
-            <label class="text-white dark:text-gray-200" for="passwordConfirmation">Text Area</label>
-            <textarea :value="modelValue" @input="$emit('update:modelValue',($event.target as HTMLInputElement).value)"
+            <label class="text-white dark:text-gray-200" for="passwordConfirmation">{{label}}</label>
+            <textarea :value="modelValue" @input="$emit('update:modelValue',($event.target as HTMLInputElement).value)" rows="4"
                 :placeholder="placeholderText"
                 class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"></textarea>
         </div>

@@ -5,5 +5,7 @@ interface Link {
 }
 
 export interface MetaInterface{
-     links:Link[]
+     links:Link[];
+     per_page:number;
+    total: number;
 }

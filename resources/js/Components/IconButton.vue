@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faClock, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faPen, faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
 import { Link } from '@inertiajs/vue3';
 import { Ref, computed, ref } from 'vue';
 
@@ -22,7 +22,8 @@ interface IconType{
 const types : Ref<IconType[]>=ref([
     {color:'stroke', icon:faClock, type:'default'},
     {color:'info', icon:faPen, type:'edit'},
-    {color:'danger', icon:faTrash, type:'delete'}
+    {color:'danger', icon:faTrash, type:'delete'},
+    {color:'primary', icon:faEye, type:'show'}
 ])
 
 const typeSelected=computed(()=>{

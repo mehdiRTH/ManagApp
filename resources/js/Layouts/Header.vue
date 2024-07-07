@@ -4,9 +4,9 @@ import Breadcrumbs from './Breadcrumbs.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { SettingsMenu } from '@/types/SettingsMenu';
 import { BreadcrumbsInterface } from '@/types/BreadcrumbsInterface';
-
+import AnnounceToast from '@/Components/AnnounceToast.vue'
 defineProps<{
-    breadcrumbs:BreadcrumbsInterface[]
+    breadcrumbs?:BreadcrumbsInterface[]
 }>()
 
 defineEmits(['notificationToggle'])
@@ -26,6 +26,8 @@ const itemsSettingsMenu : Ref<SettingsMenu[]> =ref([
         <div class="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
 
             <Breadcrumbs v-if="breadcrumbs" :data="breadcrumbs" />
+            <div v-else></div>
+
             <div class="flex items-center">
                 <a href="#">
                     <button
@@ -93,5 +95,6 @@ const itemsSettingsMenu : Ref<SettingsMenu[]> =ref([
                 </div>
             </div>
     </nav>
+    <AnnounceToast v-for="announce in $page.props.auth.announces.data" :announce="announce"  />
 
 </template>

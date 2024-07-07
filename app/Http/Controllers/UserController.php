@@ -9,7 +9,9 @@ use App\Models\Section;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Diglactic\Breadcrumbs\Breadcrumbs;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -17,7 +19,7 @@ class UserController extends Controller
     function __construct(public UserRepository $userRepository){}
 
     //User index
-    public function index()
+    public function index() : Response
     {
         $users=UserResource::collection(User::paginate(5));
         $breadcrumbs=Breadcrumbs::generate('users.index');
@@ -29,7 +31,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function create()
+    public function create() : Response
     {
         $breadcrumbs=Breadcrumbs::generate('users.create');
 
@@ -41,14 +43,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function store(UserRequest $request)
+    public function store(UserRequest $request) : RedirectResponse
     {
         $this->userRepository->store($request);
 
         return redirect()->route('users.index');
     }
 
-    public function edit(User $user)
+    public function edit(User $user) : Response
     {
         $breadcrumbs=Breadcrumbs::generate('users.edit',$user);
 
@@ -60,14 +62,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(UserRequest $request, User $user)
+    public function update(UserRequest $request, User $user) : RedirectResponse
     {
         $this->userRepository->update($request,$user);
 
         return redirect()->route('users.index');
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user) : RedirectResponse
     {
         $this->userRepository->destroy($user);
 

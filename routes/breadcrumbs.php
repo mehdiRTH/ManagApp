@@ -3,6 +3,7 @@
 // Note: Laravel will automatically resolve `Breadcrumbs::` without
 // this import. This is nice for IDE syntax and refactoring.
 
+use App\Models\Announce;
 use App\Models\Meeting;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 
@@ -79,5 +80,33 @@ Breadcrumbs::for('meetings.edit', function (BreadcrumbTrail $trail,Meeting $meet
 Breadcrumbs::for('meetings.show', function (BreadcrumbTrail $trail,Meeting $meeting){
     $trail->parent('dashboard');
     $trail->push('All Meetings', route('meetings.index'));
-    $trail->push('Meeting Information', route('meetings.show', $meeting));
+    if($meeting!=new Meeting()) $trail->push('Meeting Informations', route('meetings.show', $meeting));
+    else $trail->push('This Meeting has been Canceled', route('meetings.index'));
+});
+
+
+//////////////////////////////////// Holidays \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Breadcrumbs::for('holidays.index',function (BreadcrumbTrail $trail){
+    $trail->parent('dashboard');
+    $trail->push('Holidays',route('holidays.index'));
+});
+
+//////////////////////////////////// Anounces \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Breadcrumbs::for('announces.index',function (BreadcrumbTrail $trail){
+    $trail->parent('dashboard');
+    $trail->push('Anounces', route('announces.index'));
+});
+
+Breadcrumbs::for('announces.create',function (BreadcrumbTrail $trail){
+    $trail->parent('dashboard');
+    $trail->push('Announces', route('announces.index'));
+    $trail->push('Create Anounce', route('announces.create'));
+});
+
+Breadcrumbs::for('announces.edit',function (BreadcrumbTrail $trail,Announce $announce){
+    $trail->parent('dashboard');
+    $trail->push('Announces', route('announces.index'));
+    $trail->push('Edit Anounce', route('announces.edit', $announce));
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\AnnounceResource;
 use App\Http\Resources\NotificationResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -30,13 +31,16 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user=$request->user();
+
         return [
             ...parent::share($request),
 
             'auth' =>  [
-                'user' => $request->user(),
-                'role' => $request->user()?->getRoleNames(),
-                'notifications'=> $request->user() ? NotificationResource::collection($request->user()?->notifications) : null,
+                'user' => $user,
+                'role' => $user?->getRoleNames(),
+                'notifications'=> $user ? NotificationResource::collection($request->user()?->unreadNotifications) : null,
+                'announces'=> $user ? AnnounceResource::collection($user?->user_announce) : null
             ] ,
         ];
     }

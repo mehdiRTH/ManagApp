@@ -25,7 +25,7 @@ const form=useForm({
     password:'',
     password_confirmation:'',
     role: isEdit ? props.user.data.role[0] : '',
-    section:isEdit ? props.user.data.section.id : '',
+    section:isEdit ? props.user.data.section?.id : '',
     isEdit: isEdit
 })
 

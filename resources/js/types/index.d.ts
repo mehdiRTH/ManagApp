@@ -1,4 +1,8 @@
+import { AnnounceInterface } from "./Announce/AnnounceInterface";
+import { NotificationInterface } from "./Notification/NotificationInterface";
+
 export interface User {
+    role: any;
     id: number;
     name: string;
     email: string;
@@ -7,7 +11,9 @@ export interface User {
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
-        notifications: any;
+        role: Array<string>;
+        announces: AnnounceInterface;
+        notifications: NotificationInterface;
         user: User;
     };
 };

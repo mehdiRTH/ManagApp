@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-use App\Observers\MeetingObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 
-#[ObservedBy([MeetingObserver::class])]
 class Meeting extends Model
 {
     use HasFactory,hasUuids, Notifiable;
@@ -44,4 +40,5 @@ class Meeting extends Model
     {
         return User::findMany($this->participants_id);
     }
+
 }

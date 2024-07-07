@@ -23,7 +23,7 @@ const close=(()=>{
 })
 </script>
 <template>
-    <Link v-if="notification.data.route" :href="notification.data.route" class="w-full p-3 mt-4 bg-white rounded shadow flex flex-shrink-0">
+    <Link v-if="notification.data.route" :href="route(notification.data.route.url,notification.data.route.params)" class="w-full p-3 mt-4 bg-white rounded shadow flex flex-shrink-0">
     <div tabindex="0" aria-label="group icon" role="img"
         class="focus:outline-none w-8 h-8 border rounded-full border-gray-200 flex flex-shrink-0 items-center justify-center">
         <faIcon :icon="iconType.icon" :class="iconType.color" />

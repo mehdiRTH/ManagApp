@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('anounces', function (Blueprint $table) {
+        Schema::create('announces', function (Blueprint $table) {
             $table->uuid('id');
             $table->string('label');
             $table->longText('message');
-            $table->foreignUuid('to')->nullable();
+            $table->foreignUuid('receiver')->nullable();
             $table->enum('type',array('Section','All','Direct'));
             $table->timestamps();
         });

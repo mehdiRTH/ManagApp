@@ -1,7 +1,7 @@
 
 interface NotifData{
     message:string;
-    route?:string;
+    route?:{url:string,params:string};
 }
 
 export interface NotificationData{

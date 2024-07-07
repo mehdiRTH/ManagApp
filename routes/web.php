@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AnnounceController;
+use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MeetingController;
@@ -32,11 +34,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //Users
-    Route::resource('users',UserController::class);
+    Route::resource('users',UserController::class)->middleware(['role:admin|super admin']);
+
     //Meetings
     Route::resource('meetings',MeetingController::class);
+
     //Sections
-    Route::resource('sections',SectionController::class);
+    Route::resource('sections',SectionController::class)->middleware(['role:admin|super admin']);
+
+    //Holidays
+    Route::resource('holidays',HolidayController::class);
+
+    //Announces
+    Route::resource('announces',AnnounceController::class)->middleware(['role:responsible|admin|super admin']);
+
 
     //Notifications
     Route::put('read/{notification}', [NotificationController::class,'readNotification'])->name('read.notification');

@@ -50,7 +50,7 @@ class MeetingNotification extends Notification
 
         return [
             'message' => $message,
-            'route'=>$this->event=='deleted' ? null : route('meetings.show',$this->meeting)
+            'route' => $this->event == 'deleted' ? null : ['url' => 'meetings.show', 'params' => $this->meeting->id]
         ];
     }
 }

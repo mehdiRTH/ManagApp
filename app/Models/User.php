@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -56,5 +55,25 @@ class User extends Authenticatable
     public function section() : BelongsTo
     {
         return $this->belongsTo(Section::class);
+    }
+
+    public function getUserAnnounceAttribute() : Collection
+    {
+        $announces=[];
+        $user=auth()->user();
+
+        if(!$user) return [];
+
+        //Query for get announces for authenticated user
+        $announces=Announce::where(function ($query) use($user){
+            $query->where('type','Direct')
+                  ->where('receiver',$user->id);
+        })->orWhere(function ($query) use ($user){
+            $query->where('type','Section')
+                  ->where('receiver',$user->section?->id);
+        })->orWhere('type','All')
+          ->get();
+
+        return $announces;
     }
 }

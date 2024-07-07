@@ -9,8 +9,10 @@ use App\Models\Section;
 use App\Models\User;
 use App\Repositories\SectionRepository;
 use Diglactic\Breadcrumbs\Breadcrumbs;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class SectionController extends Controller
 {
@@ -20,7 +22,7 @@ class SectionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : Response
     {
         $bread=Breadcrumbs::generate("sections.index");
 
@@ -33,7 +35,7 @@ class SectionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create() : Response
     {
         $breadcrumb=Breadcrumbs::generate("sections.create");
 
@@ -47,7 +49,7 @@ class SectionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SectionRequest $request)
+    public function store(SectionRequest $request) : RedirectResponse
     {
         // Store function in repository
         $this->sectionRepository->store($request);
@@ -66,7 +68,7 @@ class SectionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Section $section)
+    public function edit(Section $section) : Response
     {
         $breadcrumb=Breadcrumbs::generate("sections.edit",$section);
 
@@ -80,7 +82,7 @@ class SectionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Section $section)
+    public function update(Request $request, Section $section) : RedirectResponse
     {
         // Update function in repository
         $this->sectionRepository->update($section, $request);
@@ -91,7 +93,7 @@ class SectionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Section $section)
+    public function destroy(Section $section) : RedirectResponse
     {
         // Destroy function in repository
         $this->sectionRepository->destroy($section);

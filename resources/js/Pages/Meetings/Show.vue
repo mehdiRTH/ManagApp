@@ -20,8 +20,7 @@ const toggleDialog = (() => {
 </script>
 <template>
     <MainLayout :head="'Meeting Information'" :breadcrumbs="breadcrumbs">
-
-        <div v-if="meeting.data" class="flex flex-col justify-center items-center mt-10">
+        <div v-if="meeting.data.id!=null" class="flex flex-col justify-center items-center mt-10">
             <div
                 class="relative flex flex-col items-center rounded-[20px] w-full max-w-[95%] mx-auto bg-primary bg-opacity-5 bg-clip-border shadow-3xl shadow-shadow-500 p-3">
                 <div class="mt-2 mb-8 w-full">

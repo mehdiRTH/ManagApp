@@ -11,50 +11,28 @@ import { Ref, ref } from 'vue';
 import { MeetingData } from '@/types/Meeting/MeetingData';
 import IconButton from '@/Components/IconButton.vue';
 import { useForm } from '@inertiajs/vue3';
-import { ElMessageBox } from 'element-plus'
-import { toast } from 'vue3-toastify';
-
+import { getCurrentInstance } from 'vue';
 const props=defineProps<{
     breadcrumbs:BreadcrumbsInterface[],
-    meetings:MeetingInterface,
-    participantes:UserInterface,
+    meetings:MeetingInterface
 
 }>()
 
-const form=useForm({})
+const {proxy} : any =getCurrentInstance();
 
+const isAdmin =ref(proxy.$helpers.hasRoles(['admin','responsible']))
 const isDialogOpen : Ref<boolean> =ref(false)
 const selectedMeeting : Ref<MeetingData> =ref(props.meetings.data[0])
-const toggleDialog = ((meeting: MeetingData) => {
 
+const toggleDialog = ((meeting: MeetingData) => {
     if(meeting) selectedMeeting.value=meeting
     isDialogOpen.value=!isDialogOpen.value
-})
-
-const destroy=((meeting : MeetingData)=>{
-            ElMessageBox.confirm(
-            'Meeting will permanently deleted. Continue?',
-            'Warning',
-            {
-            confirmButtonText: 'OK',
-            cancelButtonText: 'Cancel',
-            type: 'warning',
-            }
-        )
-            .then(() => {
-                form.delete(route('meetings.destroy',{'meeting':meeting}), {
-                preserveScroll: true,
-                onSuccess:()=>{
-                    toast.success('Meeting deleted successfully')
-                }
-                })
-            })
 })
 
 </script>
 <template>
     <MainLayout head="All Meetings" :breadcrumbs="breadcrumbs">
-        <MainTable label="All Meetings" :create_route="route('meetings.create')">
+        <MainTable label="All Meetings" :create_route="isAdmin ? route('meetings.create') : null" :meta="meetings.meta">
             <template #ThTable>
                 <ThTable>Responsible</ThTable>
                 <ThTable>Participants</ThTable>
@@ -75,14 +53,17 @@ const destroy=((meeting : MeetingData)=>{
                     <TdTable>{{ meeting.created_by.name }}</TdTable>
                     <TdTable>{{ meeting.start_date }}</TdTable>
                     <TdTable>{{ meeting.end_date }}</TdTable>
-                    <TdTable>
+                    <TdTable v-if="isAdmin">
+                        <IconButton type="show" :url="route('meetings.show',{meeting:meeting})" />
                         <IconButton type="edit" :url="route('meetings.edit',{meeting:meeting})" />
-                        <IconButton type="delete" @click="destroy(meeting)" />
-
+                        <IconButton type="delete" @click="$helpers.destroyModal({meeting:meeting},'meetings')" />
+                    </TdTable>
+                    <TdTable v-else>
+                        <IconButton type="show" :url="route('meetings.show',{meeting:meeting})" />
                     </TdTable>
                 </tr>
             </template>
         </MainTable>
-        <ParticipantsDialog :isOpen="isDialogOpen" :meeting="selectedMeeting" :key="isDialogOpen" @close="toggleDialog"></ParticipantsDialog>
+        <ParticipantsDialog :isOpen="isDialogOpen" :meeting="selectedMeeting" :key="isDialogOpen.toString()" @close="toggleDialog"></ParticipantsDialog>
     </MainLayout>
 </template>
