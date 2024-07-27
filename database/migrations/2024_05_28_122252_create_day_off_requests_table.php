@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('day_off_requests', function (Blueprint $table) {
+        Schema::create('off_requests', function (Blueprint $table) {
             $table->uuid('id');
             $table->string('label');
             $table->longText('description');
+            $table->string('duration');
             $table->string('type');
             $table->longtext('justification');
-            $table->integer('duration');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->foreignUuid('user_id');
             $table->enum('status',array('Pending','Accepted','Refused'));
+            $table->string('status_answer')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('day_off_requests');
+        Schema::dropIfExists('off_requests');
     }
 };

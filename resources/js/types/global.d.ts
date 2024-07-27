@@ -16,10 +16,11 @@ declare module 'vue' {
         route: typeof ziggyRoute;
         $helpers:{
             capitalizeFirstLetter(str:string) : string,
-            truncateString(str : string) : string,
+            truncateString(str : string,numb?:number) : string,
             destroyModal(objectModal : RouteParams<string>, routeName : string) : void,
             hasRole(role : string) : boolean,
-            hasRoles(role : Array<string>) : boolean
+            hasRoles(role : Array<string>) : boolean,
+            checkTypeImage(item : string) : boolean
         }
     }
 }

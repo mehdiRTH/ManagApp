@@ -6,7 +6,8 @@ import { faAdd } from '@fortawesome/free-solid-svg-icons';
 defineProps<{
     label:string,
     create_route?:string | null,
-    meta?:MetaInterface
+    meta?:MetaInterface,
+    isEmpty?:boolean
 }>();
 
 const emits=defineEmits(['click_create'])

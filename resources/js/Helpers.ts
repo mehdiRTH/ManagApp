@@ -8,7 +8,7 @@ export default {
     install(app : App){
         app.config.globalProperties.$helpers={
             capitalizeFirstLetter,
-            truncateString: function (str: string): string {
+            truncateString: function (str: string,numb?: number): string {
                 if (str.length > 30) {
                   return str.slice(0, 30) + "...";
                 } else {
@@ -55,6 +55,12 @@ export default {
                         }
                         })
                     })
+            },
+            checkTypeImage: function (item : string) : boolean
+            {
+                const imageType=['JPEG','JPG','PNG']
+
+                return imageType.some(ty => (item.substring(item.lastIndexOf('.') + 1).includes(ty)))
             }
         }
     }

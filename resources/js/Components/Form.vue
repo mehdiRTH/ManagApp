@@ -11,7 +11,8 @@ const emits=defineEmits(['submit'])
 
 function isErrorsEmpty():boolean
 {
-    return Object.keys(props.errors).length==0
+
+    return props.errors ? Object.keys(props.errors).length==0 : true
 }
 </script>
 <template>

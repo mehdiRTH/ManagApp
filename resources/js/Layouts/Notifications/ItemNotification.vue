@@ -1,19 +1,29 @@
 <script lang="ts" setup>
 import { Link, useForm } from '@inertiajs/vue3';
-import { ComputedRef, computed } from 'vue';
-import { IconDefinition, faCalendar, faPerson, faClose } from '@fortawesome/free-solid-svg-icons';
+import { ComputedRef, computed, ref } from 'vue';
+import { IconDefinition, faCalendar, faPerson, faClose,faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { NotificationData } from '@/types/Notification/NotificationData';
 
 const props=defineProps<{
     notification:NotificationData
 }>()
 
+interface Typeinterface{
+    icon:IconDefinition;
+    color:string;
+    type:string | null;
+}
+const notificationTheme=ref([
+    {icon:faCalendar,color:'text-primary',type:'Meeting'},
+    {icon:faPenToSquare,color:'text-secondary',type:'OffRequest'},
+    {icon:faPerson,color:'text-secondary',type:null}
+])
+
 const form=useForm({})
 
-const iconType : ComputedRef<{icon:IconDefinition,color:string}> =computed(()=>{
-    if(props.notification.type=='Meeting') return {icon:faCalendar,color:'text-primary'};
-    else return {icon:faPerson,color:'text-secondary'}
-
+const iconType : ComputedRef<Typeinterface> =computed(()=>{
+    let type=notificationTheme.value.find((item)=> item.type==props.notification.type)
+    return type ? type : {icon:faPerson,color:'text-secondary',type:null}
 })
 
 const close=(()=>{

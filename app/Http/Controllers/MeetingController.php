@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MeetingsRequest;
 use App\Http\Resources\MeetingResource;
 use App\Http\Resources\UserResource;
+use App\Jobs\NotificationJob;
 use App\Models\Meeting;
 use App\Models\User;
 use App\Repositories\MeetingRepository;
@@ -22,7 +23,7 @@ class MeetingController extends Controller implements HasMiddleware
     public static function middleware():array
     {
         return [
-            new Middleware('role:admin|responsible',except:['index','show'])
+            new Middleware('role:admin|responsible|super admin',except:['index','show'])
         ];
     }
 
@@ -33,19 +34,10 @@ class MeetingController extends Controller implements HasMiddleware
      */
     public function index() : Response
     {
-        $user=auth()->user();
-        if ($user->hasRole(['admin', 'responsible']))
-        {
-            return Inertia::render("Meetings/Index",[
-                'breadcrumbs'=>Breadcrumbs::generate('meetings.index'),
-                'meetings'=>MeetingResource::collection(Meeting::with(['responsible','createdBy'])->paginate(5))
-            ]);
-        }else {
-            return Inertia::render("Meetings/Index",[
-                'breadcrumbs'=>Breadcrumbs::generate('meetings.index'),
-                'meetings'=>MeetingResource::collection(Meeting::with(['responsible','createdBy'])->whereJsonContains('participants_id',$user->id)->paginate(5))
-            ]);
-        }
+        return Inertia::render("Meetings/Index",[
+            'breadcrumbs'=>Breadcrumbs::generate('meetings.index'),
+            'meetings'=>MeetingResource::collection($this->meetingRepository->getMeetings())
+        ]);
 
     }
 
@@ -78,7 +70,8 @@ class MeetingController extends Controller implements HasMiddleware
     {
         $meeting = Meeting::find($id) ?? new Meeting();
 
-        (new UserRepository())->readNotification($id);
+        //Read User Notification
+        NotificationJob::dispatch(auth()->user()->id,$id);
 
         return Inertia::render('Meetings/Show',[
             'breadcrumbs'=>Breadcrumbs::generate('meetings.show',$meeting),

@@ -5,6 +5,7 @@
 
 use App\Models\Announce;
 use App\Models\Meeting;
+use App\Models\OffRequest;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 
 // This import is also not required, and you could replace `BreadcrumbTrail $trail`
@@ -109,4 +110,31 @@ Breadcrumbs::for('announces.edit',function (BreadcrumbTrail $trail,Announce $ann
     $trail->parent('dashboard');
     $trail->push('Announces', route('announces.index'));
     $trail->push('Edit Anounce', route('announces.edit', $announce));
+});
+
+
+//////////////////////////////////// Day Off Request \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+Breadcrumbs::for('off_requests.index',function (BreadcrumbTrail $trail){
+    $trail->parent('dashboard');
+    $trail->push('Day off Requests', route('off_requests.index'));
+});
+
+Breadcrumbs::for('off_requests.create',function (BreadcrumbTrail $trail){
+    $trail->parent('dashboard');
+    $trail->push('Day off Requests', route('off_requests.index'));
+    $trail->push('Create Request', route('off_requests.create'));
+});
+
+Breadcrumbs::for('off_requests.edit',function (BreadcrumbTrail $trail, OffRequest $offRequest){
+    $trail->parent('dashboard');
+    $trail->push('Day off Requests', route('off_requests.index'));
+    $trail->push('Edit Request', route('off_requests.edit',$offRequest));
+});
+
+Breadcrumbs::for('off_requests.show',function (BreadcrumbTrail $trail, OffRequest $offRequest){
+    $trail->parent('dashboard');
+    $trail->push('Day off Requests', route('off_requests.index'));
+    $trail->push('Show Request Information', route('off_requests.show',$offRequest));
 });

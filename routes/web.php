@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnnounceController;
+use App\Http\Controllers\DayOffRequestController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -44,6 +45,9 @@ Route::middleware('auth')->group(function () {
 
     //Holidays
     Route::resource('holidays',HolidayController::class);
+
+    //Off Requests
+    Route::resource('off_requests',DayOffRequestController::class);
 
     //Announces
     Route::resource('announces',AnnounceController::class)->middleware(['role:responsible|admin|super admin']);

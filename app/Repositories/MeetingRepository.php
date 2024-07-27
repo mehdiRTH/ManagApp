@@ -4,10 +4,26 @@ namespace App\Repositories;
 
 use App\Jobs\MeetingJob;
 use App\Models\Meeting;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class MeetingRepository{
 
+    public function getMeetings() : LengthAwarePaginator
+    {
+        $user=User::find(auth()->user()->id);
+        $meetings=null;
+
+        if ($user->hasRole(['admin', 'responsible']))
+        {
+            $meetings=Meeting::with(['responsible','createdBy'])->paginate(5);
+        }else{
+            $meetings=Meeting::with(['responsible','createdBy'])->whereJsonContains('participants_id',$user->id)->paginate(5);
+        }
+
+        return $meetings;
+    }
     public function store($request) : void
     {
         $meeting=Meeting::create([

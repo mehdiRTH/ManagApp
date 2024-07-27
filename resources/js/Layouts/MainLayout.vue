@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ComponentInternalInstance, Ref, onMounted, ref } from 'vue';
+import { Ref, onMounted, ref } from 'vue';
 import { MenuItemInterface } from '@/types/MenuItemInterface';
-import { faCalendar, faHome, faPerson, faVideoCamera, faBullhorn } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar, faHome, faPerson, faVideoCamera, faBullhorn, faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { faScreenpal } from '@fortawesome/free-brands-svg-icons';
 import Header from './Header.vue'
 import MobileSideBar from './Mobile/MobileSidebar.vue'
@@ -26,6 +26,7 @@ const menuItemsData : Ref<MenuItemInterface[]>=ref([
     {label:'Sections',icon:faScreenpal,route:route('sections.index') ,count:null, isShowed:proxy.$helpers.hasRole('admin')},
     {label:'Holidays',icon:faCalendar,route:route('holidays.index'),count:null, isShowed:true},
     {label:'Announces',icon:faBullhorn,route:route('announces.index'),count:null, isShowed:proxy.$helpers.hasRoles(['admin','responsible'])},
+    {label:'Off Requests',icon:faClipboard,route:route('off_requests.index'),count:null, isShowed:true},
 ])
 
 const props=defineProps<{
