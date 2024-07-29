@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Meeting;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -28,20 +29,15 @@ class MeetingTest extends TestCase
         $this->meetingCredential=[
             'responsible_id'=> $this->user->id,
             'participants_id'=>$this->participants->pluck("id")->toArray(),
-            'start_date'=>now()->addDay(),
-            'end_date'=> now()->addDay()->addMinutes(30),
-            'description'=> 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum delectus sunt, ad iusto, fugit dolorum omnis, eos blanditiis magni molestiae neque at corrupti!'
-        ];
-    }
-    public function test_send_notification_when_meeting_is_created(): void
-    {
-        $response=$this->actingAs($this->user)->post('/meetings',[
-            'responsible_id'=> $this->user->id,
-            'participants_id'=>$this->participants->pluck("id")->toArray(),
             'start_date'=>now()->addDay()->format('Y-m-d H:i:s'),
             'end_date'=> now()->addDay()->addMinutes(30)->format('Y-m-d H:i:s'),
             'description'=> 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum delectus sunt, ad iusto, fugit dolorum omnis, eos blanditiis magni molestiae neque at corrupti!'
-        ]);
+        ];
+    }
+
+    public function test_send_notification_when_meeting_is_created(): void
+    {
+        $response=$this->actingAs($this->user)->post('/meetings',$this->meetingCredential);
 
         $response->assertStatus(302);
 
@@ -92,11 +88,18 @@ class MeetingTest extends TestCase
 
     private function createUser(): User
     {
-        return User::factory()->create();
+        Role::create(['name'=>'responsible']);
+        $responsible=User::factory()->create();
+        $responsible->assignRole('responsible');
+        return $responsible;
     }
 
     private function createParticipants()
     {
-        return User::factory(2)->create();
+        Role::create(['name'=>'employee']);
+        $users=User::factory(2)->create()->each(function($user){
+            $user->assignRole('employee');
+        });
+        return $users;
     }
 }
