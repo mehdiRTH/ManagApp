@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Permission\Traits\HasRoles;
 
 
@@ -75,5 +76,10 @@ class User extends Authenticatable
           ->get();
 
         return $announces;
+    }
+
+    public function dailyActivities() : HasOne
+    {
+        return $this->hasOne(DailyActivity::class);
     }
 }

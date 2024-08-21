@@ -9,6 +9,7 @@ use App\Models\OffRequest;
 use App\Notifications\OffRequestNotification;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,10 +26,15 @@ class OffRequestRepository{
         $offRequests=null;
         if(hasRole(['HR','admin','super admin']))
         {
-            $offRequests=OffRequest::paginate(5);
+            $offRequests=Cache::remember('off_requests_admin',60*60*24,function(){
+                return OffRequest::paginate(5);
+            });
         }else{
-            $offRequests=OffRequest::where('user_id',auth()->user()->id)->paginate(5);
+            $offRequests=Cache::remember('off_requests_'.auth()->user()->id,60*60*24,function (){
+                return OffRequest::where('user_id',auth()->user()->id)->paginate(5);
+            });
         }
+
         return $offRequests;
     }
 

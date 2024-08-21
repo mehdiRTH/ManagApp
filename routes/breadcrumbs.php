@@ -4,6 +4,7 @@
 // this import. This is nice for IDE syntax and refactoring.
 
 use App\Models\Announce;
+use App\Models\DailyActivity;
 use App\Models\Meeting;
 use App\Models\OffRequest;
 use Diglactic\Breadcrumbs\Breadcrumbs;
@@ -137,4 +138,23 @@ Breadcrumbs::for('off_requests.show',function (BreadcrumbTrail $trail, OffReques
     $trail->parent('dashboard');
     $trail->push('Day off Requests', route('off_requests.index'));
     $trail->push('Show Request Information', route('off_requests.show',$offRequest));
+});
+
+//////////////////////////////////// Daily Activities \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Breadcrumbs::for('daily_activities.index',function (BreadcrumbTrail $trail){
+    $trail->parent('dashboard');
+    $trail->push('Daily Activities', route('daily_activities.index'));
+});
+
+Breadcrumbs::for('daily_activities.show',function (BreadcrumbTrail $trail,DailyActivity $activity){
+    $trail->parent('dashboard');
+    $trail->push('Daily Activities', route('daily_activities.index'));
+    $trail->push('User Activities Information', route('daily_activities.show',$activity));
+});
+
+Breadcrumbs::for('daily_activities.read_qr',function (BreadcrumbTrail $trail){
+    $trail->parent('dashboard');
+    $trail->push('Daily Activities', route('daily_activities.index'));
+    $trail->push('Read Entrance QrCode', route('daily_activities.read_qr'));
 });

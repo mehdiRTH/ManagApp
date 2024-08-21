@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnnounceController;
+use App\Http\Controllers\DailyActivityController;
 use App\Http\Controllers\DayOffRequestController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\ProfileController;
@@ -8,24 +9,24 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SectionController;
+use App\Models\DailyActivity;
+use App\Models\User;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+
+    return Inertia::render('Dashboard',[
+        'breadcrumbs'=> Breadcrumbs::generate('dashboard')
     ]);
-});
+})->middleware(['auth', 'verified']);
 
 Route::get('/dashboard', function () {
-    $breadcrum=Breadcrumbs::render('dashboard');
+
     return Inertia::render('Dashboard',[
-        'breadcrumbs'=> $breadcrum->breadcrumbs
+        'breadcrumbs'=> Breadcrumbs::generate('dashboard')
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -52,6 +53,14 @@ Route::middleware('auth')->group(function () {
     //Announces
     Route::resource('announces',AnnounceController::class)->middleware(['role:responsible|admin|super admin']);
 
+    //Daily Activities
+    Route::prefix('daily_activities')->group(function(){
+        Route::get('',[DailyActivityController::class,'index'])->name('daily_activities.index')->middleware(['role:responsible|admin|HR|super admin']);
+        Route::get('/read_qr',[DailyActivityController::class,'readQr'])->name('daily_activities.read_qr');
+        Route::get('/{user}',[DailyActivityController::class,'show'])->name('daily_activities.show');
+        Route::get('/check_qr/{qr_code}',[DailyActivityController::class,'checkQr'])->name('daily_activities.check_qr');
+
+    });
 
     //Notifications
     Route::put('read/{notification}', [NotificationController::class,'readNotification'])->name('read.notification');

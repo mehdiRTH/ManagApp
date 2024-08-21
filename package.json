@@ -30,6 +30,8 @@
         "@fullcalendar/interaction": "^6.1.14",
         "@fullcalendar/vue3": "^6.1.14",
         "element-plus": "^2.7.5",
+        "moment": "^2.30.1",
+        "vue-qrcode-reader": "^5.5.7",
         "vue3-toastify": "^0.2.1"
     }
 }

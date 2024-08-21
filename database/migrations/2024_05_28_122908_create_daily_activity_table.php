@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('daily_activity', function (Blueprint $table) {
+        Schema::create('daily_activities', function (Blueprint $table) {
             $table->uuid('id');
             $table->json('in_out')->nullable();
             $table->foreignUuid('user_id');

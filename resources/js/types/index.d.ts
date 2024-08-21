@@ -15,5 +15,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
         announces: AnnounceInterface;
         notifications: NotificationInterface;
         user: User;
+        qrCode:string;
     };
 };

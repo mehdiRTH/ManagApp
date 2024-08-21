@@ -5,6 +5,8 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { SettingsMenu } from '@/types/SettingsMenu';
 import { BreadcrumbsInterface } from '@/types/BreadcrumbsInterface';
 import AnnounceToast from '@/Components/AnnounceToast.vue'
+import { faQrcode, faClose } from '@fortawesome/free-solid-svg-icons';
+import QRCodeDialog from './QRCodeDialog.vue';
 defineProps<{
     breadcrumbs?:BreadcrumbsInterface[]
 }>()
@@ -13,6 +15,7 @@ defineEmits(['notificationToggle'])
 
 const isOpen : Ref<boolean> =ref(false)
 const dropdownOpen : Ref<boolean> =ref(false)
+const openQrCode: Ref<boolean> =ref(false)
 
 const itemsSettingsMenu : Ref<SettingsMenu[]> =ref([
     {label:'Profile',type:'get',route:'profile.edit'},
@@ -52,6 +55,16 @@ const itemsSettingsMenu : Ref<SettingsMenu[]> =ref([
                         </span>
                     </button>
                 </a>
+                <!--Qr Code Section-->
+                <button @click="openQrCode=!openQrCode"
+                    class="relative middle none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-10 max-w-[40px] h-10 max-h-[40px] rounded-lg text-xs text-secondary hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30"
+                    type="button"
+                    >
+                    <faIcon :icon="faQrcode" class="h-5 w-5 text-secondary" />
+                </button>
+                <QRCodeDialog :openQrCode="openQrCode" :key="openQrCode.toString()" @close="openQrCode=!openQrCode" />
+
+                <!--Notification Section-->
                 <button @click="$emit('notificationToggle',isOpen=!isOpen)" aria-haspopup="menu" id=":r2:"
                     class="relative middle none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-10 max-w-[40px] h-10 max-h-[40px] rounded-lg text-xs text-secondary hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30"
                     type="button">
@@ -98,3 +111,4 @@ const itemsSettingsMenu : Ref<SettingsMenu[]> =ref([
     <AnnounceToast v-for="announce in $page.props.auth.announces.data" :announce="announce"  />
 
 </template>
+

@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use App\Http\Resources\AnnounceResource;
 use App\Http\Resources\NotificationResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -36,12 +38,13 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
 
-            'auth' =>  [
+           'auth' => $user ?   [
                 'user' => $user,
                 'role' => $user?->getRoleNames(),
-                'notifications'=> $user ? NotificationResource::collection($request->user()?->unreadNotifications) : null,
-                'announces'=> $user ? AnnounceResource::collection($user?->user_announce) : null
-            ] ,
+                'notifications'=> $user ? NotificationResource::collection($user->unreadNotifications) : null,
+                'announces'=> $user ? AnnounceResource::collection($user->user_announce) : null,
+                'qrCode' => Crypt::encrypt($user->id)
+            ] : [],
         ];
     }
 }
